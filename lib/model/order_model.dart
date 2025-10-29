@@ -1,51 +1,58 @@
 import 'dart:convert';
 import '../utils/date_parser.dart';
 
-class Order {
+class OrderModel {
   final int id;
-  final int userId;
+  final String userIdFk;
   final String address;
-  final String phone_no;
-  final double totalPrice;
+  final String phoneNo;
+  final double price;
+  final double deliveryCharge;
+  final double totalCharge;
   final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Order({
+  OrderModel({
     required this.id,
-    required this.userId,
+    required this.userIdFk,
     required this.address,
-    required this.phone_no,
-    required this.totalPrice,
+    required this.phoneNo,
+    required this.price,
+    required this.deliveryCharge,
+    required this.totalCharge,
     required this.status,
     required this.createdAt,
     required this.updatedAt,
   });
 
-  factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    return OrderModel(
       id: json['id'] as int,
-      userId: json['user_id'] as int,
-      totalPrice: (json['total_price'] as num).toDouble(),
+      userIdFk: json['user_id_fk'] as String,
+      address: json['address'] as String,
+      phoneNo: json['phone_no'] as String,
+      price: (json['price'] as num).toDouble(),
+      deliveryCharge: (json['delivery_charge'] as num).toDouble(),
+      totalCharge:(json['total_charge']as num).toDouble(),
       status: json['status'] as String,
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      createdAt: DateParser.parseToLocal(json['created_at']),
+      updatedAt: DateParser.parseToLocal(json['updated_at'])
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'user_id': userId,
-      'total_price': totalPrice,
+      'user_id_fk': userIdFk,
+      'address': address,
+      'phone_no': phoneNo,
+      'price': price,
+      'delivery_charge': deliveryCharge,
+      'total_charge': totalCharge,
       'status': status,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
+      'created_at': DateParser.toUtcIso(createdAt),
+      'updated_at': DateParser.toUtcIso(updatedAt)
     };
-  }
-
-  static List<Order> listFromJson(String jsonStr) {
-    final List<dynamic> data = json.decode(jsonStr);
-    return data.map((e) => Order.fromJson(e)).toList();
   }
 }

@@ -26,8 +26,8 @@ class UserModel {
       email: json['email'] as String,
       password: json['password'] as String,
       imageUrl: json['image_url'] as String?,
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at'])
+      createdAt: DateParser.parseToLocal(json['created_at']),
+      updatedAt: DateParser.parseToLocal(json['updated_at'])
     );
   }
 
@@ -38,8 +38,8 @@ class UserModel {
       'email': email,
       'password': password,
       'image_url': imageUrl,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String()
+      'created_at': DateParser.toUtcIso(createdAt),
+      'updated_at': DateParser.toUtcIso(updatedAt)
     };
   }
 }

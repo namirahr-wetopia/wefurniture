@@ -17,8 +17,8 @@ class CategoryModel {
     return CategoryModel(
       id: json['id'],
       name: json['name'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at'])
+      createdAt: DateParser.parseToLocal(json['created_at']),
+      updatedAt: DateParser.parseToLocal(json['updated_at'])
     );
   }
 
@@ -26,8 +26,8 @@ class CategoryModel {
     return {
       'id': id,
       'name': name,
-      'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String()
+      'created_at': DateParser.toUtcIso(createdAt),
+      'updated_at': DateParser.toUtcIso(updatedAt)
     };
   }
 }

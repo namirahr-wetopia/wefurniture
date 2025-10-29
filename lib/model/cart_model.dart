@@ -1,5 +1,3 @@
-import '../utils/date_parser.dart';
-
 class CartModel {
   final int id;
   final int productId;
@@ -8,6 +6,8 @@ class CartModel {
   final int quantity;
   final String color;
   final String size;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   CartModel({
     required this.id,
@@ -17,6 +17,8 @@ class CartModel {
     required this.quantity,
     required this.color,
     required this.size,
+    required this.createdAt,
+    required this.updatedAt
   });
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
@@ -28,6 +30,8 @@ class CartModel {
       quantity: map['quantity'],
       color: map['color'],
       size: map['size'],
+      createdAt: map['created_at'],
+      updatedAt: map['updated_at']
     );
   }
 
@@ -39,6 +43,8 @@ class CartModel {
       'quantity': quantity,
       'color': color,
       'size': size,
+      'created_at': createdAt,
+      'updated_at': updatedAt
     };
     return map;
   }
