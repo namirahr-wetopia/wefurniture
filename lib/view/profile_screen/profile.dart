@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../nav.dart';
 import 'tile.dart';
 import 'section.dart';
 import 'header.dart';
@@ -38,6 +39,7 @@ class ProfileScreen extends StatelessWidget {
         ]
       )
     ),
+    bottomNavigationBar: const AppBottomNavBar(currentIndex:4 ),
     );
   }
   

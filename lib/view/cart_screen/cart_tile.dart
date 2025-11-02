@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../theme/colors.dart';
-import '../home_screen/product.dart';
+import '../../model/detailed_product_model.dart';
 
 class CartTile extends StatelessWidget {
-  final Product product;
+  final DetailedProductModel product;
   final int quantity;
   final bool selected;
   final VoidCallback? onToggle;
@@ -58,8 +58,10 @@ class CartTile extends StatelessWidget {
           const SizedBox(width: 20),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              product.image_path,
+            child: Image.network(
+              product.images != null && product.images!.isNotEmpty
+                  ? product.images!.first.imageUrl
+                  : '',
               width: 90,
               fit: BoxFit.cover,
             ),
@@ -70,13 +72,13 @@ class CartTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(product.name,
+                Text(product.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
                 SizedBox(height: 2),
                 Text(
-                  product.subtitle,
+                  product.subtitle ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: AppColors.mediumGray, fontSize: 14),
@@ -85,7 +87,7 @@ class CartTile extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      product.price, 
+                      product.price as String, 
                       style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                     ),
                     const Spacer(), 

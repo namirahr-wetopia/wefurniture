@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import '../theme/colors.dart';
-import '../../model/inventory_model.dart';
-import '../../cart_provider.dart';
+import '../../model/detailed_product_model.dart';
+import '../../controller/cart_controller.dart';
 
 class RecentCard extends StatelessWidget {
-  final InventoryModel product;
+  final DetailedProductModel product;
   const RecentCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width; 
     final h = MediaQuery.sizeOf(context).height;
+
+    final cartController = Get.find<CartController>();
+
+    final imageUrl = (product.images != null && product.images!.isNotEmpty)
+        ? product.images!.first.imageUrl
+        : null;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(w * 0.0389),
-        onTap: () => context.push('/product', extra: product),
+        onTap: () => Get.toNamed('/product', arguments: product),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -38,10 +45,14 @@ class RecentCard extends StatelessWidget {
                       ),
                       clipBehavior: Clip.antiAlias,
                       child: Center(
-                        child: Image.asset(
-                          product.image_url,
-                          fit: BoxFit.contain,
-                        ),
+                        child: imageUrl != null && imageUrl.isNotEmpty
+                            ? Image.network(
+                                imageUrl,
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) =>
+                                    const Icon(Icons.broken_image),
+                              )
+                            : const Icon(Icons.image, size: 48),
                       ),
                     ),
                     if (product.isNew)
@@ -98,7 +109,7 @@ class RecentCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        product.name,
+                        product.title,
                         style: const TextStyle(fontFamily:'Inter', color: AppColors.darkestGray,fontWeight: FontWeight.w700, fontSize: 20),
                       ),
                     ],
@@ -107,7 +118,7 @@ class RecentCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        product.subtitle,
+                        product.subtitle ?? '',
                         style: TextStyle(fontFamily:'Inter',color: AppColors.mediumGray, fontSize: 16),
                       ),
                     ],
@@ -120,12 +131,12 @@ class RecentCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        product.price,
+                        product.price as String,
                         style: const TextStyle(fontFamily:'Inter',fontWeight: FontWeight.w700, fontSize: 20),
                       ),
                       const Spacer(),
                       InkWell(
-                        onTap: () => CartProvider.of(context).add(product),
+                        onTap: () => cartController.add(product),
                         borderRadius: BorderRadius.circular(w * 0.0438),
                         child: Container(
                           height: h * 0.0505,

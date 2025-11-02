@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'view/theme/colors.dart';
 
 class AppBottomNavBar extends StatelessWidget {
-  final StatefulNavigationShell navigationShell;
-  const AppBottomNavBar({super.key, required this.navigationShell});
+  final int currentIndex;
+  const AppBottomNavBar({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       backgroundColor: AppColors.white,
       type: BottomNavigationBarType.fixed,
-      currentIndex: navigationShell.currentIndex,
+      currentIndex: currentIndex,
       onTap: (index) {
-        if (index == 3) {
-          context.push('/cart'); 
-        }
-        else if( index==4){
-          context.go('/profile');
-        }
-        else{
-          navigationShell.goBranch(index);
+        switch (index) {
+          case 0:
+            Get.toNamed('/home');
+            break;
+          case 1:
+            // implement favourites route if you have one
+            break;
+          case 2:
+            // implement scan route if you have one
+            break;
+          case 3:
+            Get.toNamed('/cart');
+            break;
+          case 4:
+            Get.toNamed('/profile');
+            break;
         }
       },
       items: const [
@@ -33,4 +41,3 @@ class AppBottomNavBar extends StatelessWidget {
     );
   }
 }
-

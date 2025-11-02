@@ -1,6 +1,4 @@
 import '../utils/date_parser.dart';
-import 'colour_model.dart';
-import 'product_model.dart';
 
 class InventoryModel {
   final int id;
@@ -11,9 +9,6 @@ class InventoryModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  final ProductModel? product;
-  final ColourModel? colour;
-
   InventoryModel({
     required this.id,
     required this.productIdFk,
@@ -21,9 +16,7 @@ class InventoryModel {
     required this.quantity,
     required this.status,
     required this.createdAt,
-    required this.updatedAt,
-    this.product,
-    this.colour
+    required this.updatedAt
   });
 
   factory InventoryModel.fromJson(Map<String, dynamic> json) {
@@ -33,17 +26,6 @@ class InventoryModel {
       if (v == null) return null;
       return v is String ? int.parse(v) : v as int;
     }
-
-    ProductModel? product;
-    if (json['product'] != null && json['product'] is Map<String, dynamic>) {
-      product = ProductModel.fromJson(Map<String, dynamic>.from(json['product']));
-    }
-
-    ColourModel? colour;
-    if (json['colour'] != null && json['colour'] is Map<String, dynamic>) {
-      colour = ColourModel.fromJson(Map<String, dynamic>.from(json['colour']));
-    }
-
     return InventoryModel(
       id: parseInt(json['id']),
       productIdFk: parseInt(json['product_id_fk']),
@@ -51,9 +33,7 @@ class InventoryModel {
       quantity: parseInt(json['quantity']),
       status: json['status'] as String,
       createdAt: DateParser.parseToLocal(json['created_at']),
-      updatedAt: DateParser.parseToLocal(json['updated_at']),
-      product: product,
-      colour: colour
+      updatedAt: DateParser.parseToLocal(json['updated_at'])
     );
   }
 }

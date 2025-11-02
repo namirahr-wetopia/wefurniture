@@ -17,9 +17,11 @@ class ApiConfig {
     return v;
   }
 
-  static Map<String, String> get headers => {
+  static Map<String, String> getHeaders(){
+    return {
     'Content-Type': 'application/json',
     'apikey': getApiKey(),
-    'Authorization': 'Bearer  ${getApiKey()}',
+    'Authorization': 'Bearer ${getApiKey()}'
   };
+  }
 }
