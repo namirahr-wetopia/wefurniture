@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controller/detailed_product_by_category_controller.dart';
 import '../../nav.dart';
 import '../theme/colors.dart';
 import 'header.dart';
@@ -10,15 +11,30 @@ import 'product_carousel.dart';
 import 'bestseller_carousel.dart';
 import '../../controller/detailed_product_controller.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late final DetailedProductByCategoryController productController;
+  @override
+  void initState() {
+    super.initState();
+
+    if (!Get.isRegistered<DetailedProductByCategoryController>()) {
+      productController = Get.put(DetailedProductByCategoryController());
+    } else {
+      productController = Get.find<DetailedProductByCategoryController>();
+    }
+    
+    productController.fetchProductofAllCategories();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Initialize controller once
-    final productController = Get.put(DetailedProductController());
-    // Fetch products on first build
-    productController.fetchProducts();
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -31,7 +47,7 @@ class HomeScreen extends StatelessWidget {
             const SliverToBoxAdapter(child: Categories()),
             SliverToBoxAdapter(
                 child: SizedBox(height: MediaQuery.sizeOf(context).height * 0.0224)),
-            const SliverToBoxAdapter(child: ProductCarousel()), // No more future
+            const SliverToBoxAdapter(child: ProductCarousel()), 
             const SliverToBoxAdapter(child: SectionTitle('Best Seller')),
             const SliverToBoxAdapter(child: BestSellerCarousel())
           ],

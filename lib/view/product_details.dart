@@ -1,8 +1,9 @@
-// product_details.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../model/detailed_product_by_category_model.dart';
 import 'widgets/theme_button.dart';
-import '../model/detailed_product_model.dart';
+import 'widgets/step_button.dart';
+import 'widgets/circle_icon_button.dart';
 import '../controller/cart_controller.dart';
 import 'theme/colors.dart';
 
@@ -12,7 +13,7 @@ class ProductDetails extends StatefulWidget {
     required this.product,
   });
 
-  final DetailedProductModel product;
+  final DetailedProductByCategoryModel product;
 
   @override
   State<ProductDetails> createState() => _ProductDetailsPageState();
@@ -26,7 +27,7 @@ class _ProductDetailsPageState extends State<ProductDetails> {
   List<String> get _thumbs {
     final imgs = widget.product.images;
     if (imgs == null || imgs.isEmpty) {
-      return ['']; // placeholder empty url
+      return ['']; 
     }
     return imgs.map((e) => e.imageUrl ?? '').toList();
   }
@@ -46,15 +47,13 @@ class _ProductDetailsPageState extends State<ProductDetails> {
         ? thumbs[selectedImage]
         : null;
 
-    // Color names (if any)
-    final colorNames = product.colorNames ?? [];
+    final colorNames = product.colourInventories ?? [];
 
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // top image / hero area
             SliverToBoxAdapter(
               child: Stack(
                 children: [
@@ -69,28 +68,22 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                           )
                         : const Center(child: Icon(Icons.image, size: 72)),
                   ),
-
-                  // back button
                   Positioned(
                     left: w * 0.0292,
                     top: w * 0.0292,
-                    child: _CircleIcon(
+                    child: CircleIconButton(
                       icon: Icons.arrow_back_ios_new_rounded,
                       onTap: () => Get.back(),
                     ),
                   ),
-
-                  // favourite
                   Positioned(
                     right: w * 0.0292,
                     top: w * 0.0292,
-                    child: _CircleIcon(
+                    child: CircleIconButton(
                       icon: Icons.favorite_border,
                       onTap: () {},
                     ),
                   ),
-
-                  // small 360 label centered near bottom of image
                   Positioned(
                     bottom: h * 0.0090,
                     left: 0,
@@ -102,7 +95,7 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                           width: w * 0.340,
                           height: h * 0.0314,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.85),
+                            color: Colors.white.withValues(alpha: 0.85),
                             borderRadius: BorderRadius.circular(w * 0.0487),
                           ),
                           alignment: Alignment.center,
@@ -121,8 +114,6 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                 ],
               ),
             ),
-
-            // info panel
             SliverToBoxAdapter(
               child: Container(
                 decoration: BoxDecoration(
@@ -136,7 +127,6 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // title + rating
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -165,7 +155,6 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                             ],
                           ),
                         ),
-
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: w * 0.0195, vertical: h * 0.0067),
@@ -192,20 +181,16 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                         ),
                       ],
                     ),
-
                     SizedBox(height: h * 0.0045),
-
-                    // description (short)
                     Text(
                       product.description ??
-                          "Simple & elegant shape makes it very suitable for a minimalist room.",
+                          "No description available.",
                       style: TextStyle(
                         color: Colors.grey.shade700,
                         height: 1.35,
                         fontFamily: 'Inter',
                       ),
                     ),
-
                     SizedBox(height: h * 0.0045),
                     Text(
                       "Read More",
@@ -215,10 +200,7 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                         fontFamily: 'Inter',
                       ),
                     ),
-
                     SizedBox(height: h * 0.0337),
-
-                    // thumbnails (if available)
                     if (thumbs.isNotEmpty)
                       SizedBox(
                         height: h * 0.0808,
@@ -251,10 +233,7 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                           ),
                         ),
                       ),
-
                     SizedBox(height: h * 0.0337),
-
-                    // colors + quantity
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -266,11 +245,9 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                               fontSize: 16),
                         ),
                         SizedBox(width: w * 0.0292),
-
-                        // if color names provided, show them as selectable chips
-                        if (colorNames.isNotEmpty)
+                        if (colorNames!.isNotEmpty)
                           ...List.generate(colorNames.length, (i) {
-                            final name = colorNames[i];
+                            final name = colorNames[i].colourName;
                             final isSelected = selectedColor == i;
                             return Padding(
                               padding: EdgeInsets.only(right: w * 0.0195),
@@ -278,40 +255,19 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                                 label: Text(
                                   name,
                                   style: TextStyle(
-                                    color: isSelected ? Colors.white : Colors.black87,
+                                    color: Colors.white,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
                                   ),
                                 ),
-                                selectedColor: AppColors.darkGray,
+                                selectedColor: AppColors.mediumGray,
                                 selected: isSelected,
                                 onSelected: (_) => setState(() => selectedColor = i),
                               ),
                             );
-                          })
-                        else
-                          // fallback color dots
-                          ...[
-                            _ColorDot(
-                              color: Colors.grey.shade700,
-                              selected: selectedColor == 0,
-                              onTap: () => setState(() => selectedColor = 0),
-                            ),
-                            SizedBox(width: w * 0.0195),
-                            _ColorDot(
-                              color: Colors.grey.shade400,
-                              selected: selectedColor == 1,
-                              onTap: () => setState(() => selectedColor = 1),
-                            ),
-                            SizedBox(width: w * 0.0195),
-                            _ColorDot(
-                              color: const Color(0xFFE4574D),
-                              selected: selectedColor == 2,
-                              onTap: () => setState(() => selectedColor = 2),
-                            ),
-                          ],
-
+                          }),
                         const Spacer(),
-
-                        // Quantity stepper
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6),
                           height: h * 0.0381,
@@ -323,7 +279,7 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              _StepBtn(
+                              StepButton(
                                 icon: Icons.remove,
                                 onTap: () {
                                   if (quantity > 1) {
@@ -338,7 +294,7 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                                     fontWeight: FontWeight.w700, fontSize: 16),
                               ),
                               SizedBox(width: w * 0.0195),
-                              _StepBtn(
+                              StepButton(
                                 icon: Icons.add,
                                 onTap: () => setState(() => quantity++),
                               ),
@@ -347,17 +303,12 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                         ),
                       ],
                     ),
-
                     SizedBox(height: h * 0.0045),
                   ],
                 ),
               ),
             ),
-
-            // space for bottom button
             SliverToBoxAdapter(child: SizedBox(height: h * 0.0337)),
-
-            // bottom checkout button area (keeps your existing WidthButton)
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(
@@ -365,12 +316,9 @@ class _ProductDetailsPageState extends State<ProductDetails> {
                 child: WidthButton(
                   text: 'Add to Cart',
                   onPressed: () {
-                    // add product 'quantity' times to cartController
                     for (int i = 0; i < quantity; i++) {
                       cartController.add(product);
                     }
-
-                    // navigate to cart
                     Get.toNamed('/cart');
                   },
                   doubleLabel: true,
@@ -385,88 +333,7 @@ class _ProductDetailsPageState extends State<ProductDetails> {
   }
 }
 
-/// small circular icon used in top bar
-class _CircleIcon extends StatelessWidget {
-  const _CircleIcon({required this.icon, this.onTap});
-  final IconData icon;
-  final VoidCallback? onTap;
 
-  @override
-  Widget build(BuildContext context) {
-    final w = MediaQuery.sizeOf(context).width;
-    return Material(
-      color: Colors.white,
-      shape: const CircleBorder(),
-      elevation: 2,
-      child: InkWell(
-        customBorder: const CircleBorder(),
-        onTap: onTap,
-        child: SizedBox(
-          width: w * 0.0973,
-          height: w * 0.0973,
-          child: Icon(icon, size: 18, color: Colors.black87),
-        ),
-      ),
-    );
-  }
-}
 
-/// color dot fallback widget
-class _ColorDot extends StatelessWidget {
-  const _ColorDot({
-    required this.color,
-    required this.selected,
-    this.onTap,
-  });
 
-  final Color color;
-  final bool selected;
-  final VoidCallback? onTap;
 
-  @override
-  Widget build(BuildContext context) {
-    final w = MediaQuery.sizeOf(context).width;
-    return InkResponse(
-      onTap: onTap,
-      radius: w * 0.0438,
-      child: Container(
-        width: w * 0.0584,
-        height: w * 0.0584,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: selected ? Colors.black87 : Colors.transparent,
-            width: 2,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StepBtn extends StatelessWidget {
-  const _StepBtn({required this.icon, this.onTap});
-  final IconData icon;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final w = MediaQuery.sizeOf(context).width;
-    return InkResponse(
-      onTap: onTap,
-      radius: w * 0.0438,
-      child: Container(
-        width: w * 0.0633,
-        height: w * 0.0633,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: Icon(icon, size: 16),
-      ),
-    );
-  }
-}

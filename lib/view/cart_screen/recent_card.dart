@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../theme/colors.dart';
-import '../../model/detailed_product_model.dart';
+import '../../model/detailed_product_by_category_model.dart';
 import '../../controller/cart_controller.dart';
 
 class RecentCard extends StatelessWidget {
-  final DetailedProductModel product;
+  final DetailedProductByCategoryModel product;
   const RecentCard({super.key, required this.product});
 
   @override
@@ -111,6 +111,8 @@ class RecentCard extends StatelessWidget {
                       Text(
                         product.title,
                         style: const TextStyle(fontFamily:'Inter', color: AppColors.darkestGray,fontWeight: FontWeight.w700, fontSize: 20),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis 
                       ),
                     ],
                   ),
@@ -131,7 +133,7 @@ class RecentCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        product.price as String,
+                        product.price.toString(),
                         style: const TextStyle(fontFamily:'Inter',fontWeight: FontWeight.w700, fontSize: 20),
                       ),
                       const Spacer(),

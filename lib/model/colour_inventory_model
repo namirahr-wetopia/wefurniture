@@ -1,0 +1,24 @@
+import '../data/remote/api_config.dart';
+import 'product_image_model.dart';
+import 'package:flutter/material.dart';
+
+class ColourInventoryModel {
+  final String colourName;
+  final String status;
+  final int quantity;
+
+  ColourInventoryModel({
+    required this.colourName,
+    required this.status,
+    required this.quantity,
+  });
+
+  factory ColourInventoryModel.fromJson(Map<String, dynamic> json) {
+    return ColourInventoryModel(
+      colourName: json['colour_name']?.toString() ?? '',
+      status: json['status']?.toString() ?? '',
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../model/detailed_product_model.dart';
-import '../theme/colors.dart';
-import '../../controller/detailed_product_controller.dart';
+import '../../controller/detailed_product_by_category_controller.dart';
 import 'recent_card.dart';
 
 class RecentCarousel extends StatelessWidget {
@@ -12,18 +10,18 @@ class RecentCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
     final h = MediaQuery.sizeOf(context).height;
-    final productController = Get.find<DetailedProductController>();
+    final productController = Get.find<DetailedProductByCategoryController>();
 
     return SizedBox(
       height: 350,
       child: Obx(() {
-        if (productController.isLoading.value) {
+        if (productController.isLoadingAll.value) {
           return Center(
               child:
                   SizedBox(height: 40, width: 40, child: CircularProgressIndicator()));
         }
 
-        final items = productController.products;
+        final items = productController.allProducts;
 
         if (items.isEmpty) {
           return const Center(child: Text('No products found'));
@@ -35,7 +33,7 @@ class RecentCarousel extends StatelessWidget {
           children: [
             for (final prod in items) ...[
               SizedBox(
-                width: 230,
+                width: 280,
                 child: RecentCard(product: prod),
               ),
               const SizedBox(width: 18),

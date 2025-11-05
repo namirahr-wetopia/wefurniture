@@ -1,9 +1,10 @@
-// profile_header.dart
 import 'package:flutter/material.dart';
 import '../theme/colors.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  final String name;
+  final String email;
+  const ProfileHeader({Key?key,required this.name,required this.email}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +44,8 @@ class ProfileHeader extends StatelessWidget {
               ],
             ),
             SizedBox(height: h * 0.013),
-            const Text('Michael Leanon', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, fontFamily: 'Inter')),
-            Text('michaeilean42@gmail.com', style: TextStyle(color: AppColors.mediumGray, fontSize: 16,  fontFamily: 'Inter')),
+            Text(name, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, fontFamily: 'Inter')),
+            Text(email, style: TextStyle(color: AppColors.mediumGray, fontSize: 16,  fontFamily: 'Inter')),
             SizedBox(height: h *0.026),
           ],
         ),

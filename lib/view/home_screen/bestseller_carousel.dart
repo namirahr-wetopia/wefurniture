@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../theme/colors.dart';
-import '../../controller/detailed_product_controller.dart';
+import '../../controller/detailed_product_by_category_controller.dart';
 import 'bestseller_card.dart';
 
 class BestSellerCarousel extends StatelessWidget {
@@ -12,22 +12,21 @@ class BestSellerCarousel extends StatelessWidget {
     final w = MediaQuery.sizeOf(context).width;
     final h = MediaQuery.sizeOf(context).height;
 
-    final productController = Get.find<DetailedProductController>();
+    final productController = Get.find<DetailedProductByCategoryController>();
 
     return SizedBox(
       height: h * 0.18,
       child: Obx(() {
-        if (productController.isLoading.value) {
+        if (productController.isLoadingAll.value) {
           return const Center(child: SizedBox(width: 40, height: 40, child: CircularProgressIndicator()));
         }
 
-        final items = productController.products;
+        final items = productController.allProducts;
         if (items.isEmpty) {
           return const Center(child: Text('No products found'));
         }
 
-        final displayItems = items.take(6).toList();
-
+        final displayItems = items.toList();
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: EdgeInsets.symmetric(horizontal: w * 0.0389),

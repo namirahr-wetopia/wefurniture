@@ -31,12 +31,7 @@ class OnboardingPage extends StatelessWidget {
             child: Container(
               width: double.infinity,
               color: Colors.white,
-              padding: const EdgeInsets.fromLTRB(
-                50,  // left
-                10,  // top
-                50,  // right
-                30,  // bottom
-              ),
+              padding: const EdgeInsets.fromLTRB(50,10,50,30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

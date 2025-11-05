@@ -1,8 +1,8 @@
 // product_carousel.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controller/detailed_product_by_category_controller.dart';
 import '../theme/colors.dart';
-import '../../controller/detailed_product_controller.dart';
 import 'product_card.dart';
 
 class ProductCarousel extends StatelessWidget {
@@ -13,18 +13,18 @@ class ProductCarousel extends StatelessWidget {
     final w = MediaQuery.sizeOf(context).width;
     final h = MediaQuery.sizeOf(context).height;
 
-    final productController = Get.find<DetailedProductController>();
+    final productByCategoryController = Get.find<DetailedProductByCategoryController>();
 
     return SizedBox(
       height: h * 0.393,
       child: Obx(() {
-        if (productController.isLoading.value) {
+        if (productByCategoryController.isLoading.value) {
           return Center(
               child:
                   SizedBox(height: 40, width: 40, child: CircularProgressIndicator()));
         }
 
-        final items = productController.products;
+        final items = productByCategoryController.products;
 
         if (items.isEmpty) {
           return const Center(child: Text('No products found'));

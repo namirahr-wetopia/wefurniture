@@ -1,12 +1,11 @@
-// product_card.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../model/detailed_product_by_category_model.dart';
 import '../theme/colors.dart';
 import '../../controller/cart_controller.dart';
-import '../../model/detailed_product_model.dart';
 
 class ProductCard extends StatelessWidget {
-  final DetailedProductModel product;
+  final DetailedProductByCategoryModel product;
   ProductCard({super.key, required this.product}){
     print('ProductCard created with product: ${product.title}, price: ${product.price}, id: ${product.id}');
   }
@@ -165,19 +164,6 @@ class ProductCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // optional: show available color names, if any
-                      if (product.colorNames != null &&
-                          product.colorNames!.isNotEmpty)
-                        Padding(
-                          padding: EdgeInsets.only(top: h * 0.006),
-                          child: Text(
-                            product.colorNames!.join(', '),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 12, color: AppColors.mediumGray),
-                          ),
-                        ),
                     ],
                   ),
                 ),

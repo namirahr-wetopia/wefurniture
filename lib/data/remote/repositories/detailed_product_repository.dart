@@ -10,7 +10,6 @@ class DetailedProductRepository {
     try {
         final url = Uri.parse('${ApiConfig.getBaseUrl()}/rest/v1/rpc/get_detailed_products');
         
-        // Debug prints before request
         print('Attempting request to: $url');
         
         final response = await http.post(
@@ -24,8 +23,7 @@ class DetailedProductRepository {
         if (response.statusCode == 200) {
             final List<dynamic> data = json.decode(response.body);
             print('Parsed JSON data length: ${data.length}');
-            
-            // Debug each item before parsing
+
             return data.map((item) {
                 print('Processing item: $item');
                 try {

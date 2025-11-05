@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../model/detailed_product_by_category_model.dart';
 import '../theme/colors.dart';
-import '../../model/detailed_product_model.dart';
+
 
 class CartTile extends StatelessWidget {
-  final DetailedProductModel product;
+  final DetailedProductByCategoryModel product;
   final int quantity;
   final bool selected;
   final VoidCallback? onToggle;
@@ -36,7 +37,7 @@ class CartTile extends StatelessWidget {
       child: Row(
         children: [
           InkWell(
-            onTap: onToggle, // parent handles toggling
+            onTap: onToggle,
             borderRadius: BorderRadius.circular(8),
             child: Container(
               width: 20,
@@ -87,7 +88,7 @@ class CartTile extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      product.price as String, 
+                      product.price.toString(), 
                       style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                     ),
                     const Spacer(), 

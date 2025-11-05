@@ -17,7 +17,6 @@ class CartScreen extends StatelessWidget {
     final w = MediaQuery.sizeOf(context).width;
     final h = MediaQuery.sizeOf(context).height;
 
-    // Local reactive state for selected checkboxes
     final selected = <bool>[].obs;
 
     void _deleteSelected() {
@@ -62,7 +61,6 @@ class CartScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() {
-        // Keep selected state list aligned with items
         if (selected.length != cartController.items.length) {
           final old = List<bool>.from(selected);
           selected.assignAll(

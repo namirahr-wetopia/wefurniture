@@ -18,10 +18,10 @@ class AppBottomNavBar extends StatelessWidget {
             Get.toNamed('/home');
             break;
           case 1:
-            // implement favourites route if you have one
+            // no favourite route yet
             break;
           case 2:
-            // implement scan route if you have one
+            // no scan route yet
             break;
           case 3:
             Get.toNamed('/cart');

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/cart_controller.dart';
-import '../../model/detailed_product_model.dart';
+import '../../model/detailed_product_by_category_model.dart';
 import '../theme/colors.dart';
 
 class BestSellerCard extends StatelessWidget {
-  final DetailedProductModel product;
+  final DetailedProductByCategoryModel product;
   const BestSellerCard({super.key, required this.product});
 
   @override

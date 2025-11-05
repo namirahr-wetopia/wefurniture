@@ -28,9 +28,8 @@ class DetailedProductModel {
   });
 
   factory DetailedProductModel.fromJson(Map<String, dynamic> json) {
-    print('Parsing JSON: $json'); // Log the entire JSON object
+    print('Parsing JSON: $json'); 
 
-    // parse images
     List<ProductImageModel>? images;
     if (json['images'] != null && json['images'] is List) {
       images = (json['images'] as List).map((imageJson) {
@@ -38,7 +37,7 @@ class DetailedProductModel {
         final storageUrl = '${ApiConfig.getBaseUrl()}/storage/v1/object/public/';
         final suffixUrl = imageJson['image_url']?.toString() ?? '';
         final fullUrl = suffixUrl.isNotEmpty ? '$storageUrl$suffixUrl' : '';
-        print('Parsing image JSON: $imageJson, fullUrl: $fullUrl'); // Log each image JSON and full URL
+        print('Parsing image JSON: $imageJson, fullUrl: $fullUrl');
         return ProductImageModel(
           id: id+1,
           productIdFk: json['id'] != null ? (json['id'] as num).toInt() : 0,
@@ -50,13 +49,11 @@ class DetailedProductModel {
       }).toList();
     }
 
-    // parse colour names
     List<String>? colorNames;
     if (json['colour_names'] != null && json['colour_names'] is List) {
       colorNames = List<String>.from(json['colour_names']);
     }
 
-    // Log each field being parsed
     final id = json['id'] != null ? (json['id'] as num).toInt() : 0;
     final title = json['title']?.toString() ?? '';
     final subtitle = json['subtitle']?.toString();
@@ -66,7 +63,7 @@ class DetailedProductModel {
     final rating = (json['rating'] as num?)?.toDouble() ?? 0.0;
     final isNew = json['is_new'] as bool? ?? false;
 
-    print('Parsed values: id=$id, title=$title, price=$price, rating=$rating'); // Log parsed values
+    print('Parsed values: id=$id, title=$title, price=$price, rating=$rating');
 
     return DetailedProductModel(
       id: id,
